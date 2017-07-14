@@ -58,9 +58,10 @@ public final class QueryUtils {
                 Double magnitude = properties.optDouble("mag");
                 String location = properties.optString("place");
                 long timeInMilliseconds = properties.optLong("time");
+                String website = properties.optString("url");
 
                 // Add earthquake data into earthquakes list
-                earthquakes.add(new Earthquake(magnitude, location, timeInMilliseconds));
+                earthquakes.add(new Earthquake(magnitude, location, timeInMilliseconds, website));
             }
 
         } catch (JSONException e) {

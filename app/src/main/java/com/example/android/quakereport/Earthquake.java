@@ -14,6 +14,9 @@ public class Earthquake {
     /** Date of the earthquake */
     private long mTimeInMilliseconds;
 
+    /** Date of the earthquake */
+    private String mWebsite;
+
     /**
      * Constructs a new {@link Earthquake} object.
      *
@@ -21,10 +24,11 @@ public class Earthquake {
      * @param location is the city location of the earthquake
      * @param timeInMilliseconds is the time in milliseconds (from the Epoch) when the earthquake happened
      */
-    public Earthquake(double magnitude, String location, long timeInMilliseconds) {
+    public Earthquake(double magnitude, String location, long timeInMilliseconds, String website) {
         mMagnitude = magnitude;
         mLocation = location;
         mTimeInMilliseconds = timeInMilliseconds;
+        mWebsite = website;
     }
 
     /**
@@ -46,5 +50,12 @@ public class Earthquake {
      */
     public long getTimeInMilliseconds() {
         return mTimeInMilliseconds;
+    }
+
+    /**
+     * Returns the details web page of the earthquake
+     */
+    public String getWebsite() {
+        return mWebsite;
     }
 }
