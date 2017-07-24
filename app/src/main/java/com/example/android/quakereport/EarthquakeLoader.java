@@ -1,8 +1,9 @@
 package com.example.android.quakereport;
 
-import android.support.v4.content.AsyncTaskLoader;
 import android.content.Context;
+import android.support.v4.content.AsyncTaskLoader;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>> {
 
     @Override
     public List<Earthquake> loadInBackground() {
+        Log.v(LOG_TAG, "******************Called loadInBackground()");
         if(TextUtils.isEmpty(mRequestUrl) || mRequestUrl == null) {
             return null;
         }
@@ -29,6 +31,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>> {
    // Override the onStartLoading() method to call forceLoad() which is a required step to actually trigger the loadInBackground() method to execute.
     @Override
     protected void onStartLoading() {
+        Log.v(LOG_TAG, "******************Called onStartLoading()");
         forceLoad();
     }
 }

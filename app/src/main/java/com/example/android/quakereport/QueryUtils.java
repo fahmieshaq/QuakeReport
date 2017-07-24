@@ -37,9 +37,12 @@ public final class QueryUtils {
      * Query the USGS dataset and return a list of {@link Earthquake} objects.
      */
     public static List<Earthquake> fetchEarthQuakeData(String requestUrl) {
+        Log.v(LOG_TAG, "*************Called BEGIN fetchEarthQuakeData()");
+        Log.v(LOG_TAG, "*************Called fetchEarthQuakeData() before createUrl");
         // Create URL object
         URL url = createUrl(requestUrl);
 
+        Log.v(LOG_TAG, "*************Called fetchEarthQuakeData() before makeHttpsRequest");
         // Perform HTTP request to the URL and receive a JSON response back
         String jsonResponse = null;
         try {
@@ -48,6 +51,7 @@ public final class QueryUtils {
             Log.e(LOG_TAG, "Problem making the HTTP request. ", e);
         }
 
+        Log.v(LOG_TAG, "*************Called fetchEarthQuakeData() before extractFeatureFromJson");
         // Extract relevant fields from the JSON response and create a list of {@link Earthquake}s
         List<Earthquake> earthquakes = extractFeatureFromJson(jsonResponse);
 
@@ -60,7 +64,7 @@ public final class QueryUtils {
      * parsing a JSON response.
      */
     private static List<Earthquake> extractFeatureFromJson(String earthquakeJson) {
-
+        Log.v(LOG_TAG, "*************Called extractFeatureFromJson");
         if(TextUtils.isEmpty(earthquakeJson)) {
             return null;
         }
@@ -108,6 +112,7 @@ public final class QueryUtils {
     }
 
     private static URL createUrl(String stringUrl) {
+        Log.v(LOG_TAG, "*************Called createUrl");
         URL url = null;
         try {
             url = new URL(stringUrl);
@@ -118,6 +123,7 @@ public final class QueryUtils {
     }
 
     private static String makeHttpsRequest(URL url) throws IOException {
+        Log.v(LOG_TAG, "*************Called makeHttpsRequest");
         String jsonResponse = "";
 
         if (url == null) {
