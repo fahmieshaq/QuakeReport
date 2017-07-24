@@ -33,6 +33,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+// I'm in a local master branch
 public class EarthquakeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Earthquake>> {
 
     private static final String LOG_TAG = EarthquakeActivity.class.getName();
@@ -113,7 +114,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
             Log.v(LOG_TAG, "*******************onCreate() after getLoadManager()");
         } else {
-            Log.v(LOG_TAG, "*******************No Internet Conneciton");
+            Log.v(LOG_TAG, "*******************No Internet Connection");
             // Hide loading indicator because the data has been loaded
             View loadingIndicator = findViewById(R.id.loading_indicator);
             loadingIndicator.setVisibility(View.GONE);
