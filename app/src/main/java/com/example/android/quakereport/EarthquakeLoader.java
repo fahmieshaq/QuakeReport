@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import java.util.List;
 
 public class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>> {
+    private static final String LOG_TAG = EarthquakeLoader.class.getName();
     private String mRequestUrl;
 
     public EarthquakeLoader(Context context, String url) {
@@ -25,6 +26,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>> {
         return earthquakes;
     }
 
+   // Override the onStartLoading() method to call forceLoad() which is a required step to actually trigger the loadInBackground() method to execute.
     @Override
     protected void onStartLoading() {
         forceLoad();
