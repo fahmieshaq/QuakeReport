@@ -17,8 +17,9 @@ package com.example.android.quakereport;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,7 +28,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EarthquakeActivity extends AppCompatActivity {
+public class EarthquakeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Earthquake>> {
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
 
@@ -72,9 +73,33 @@ public class EarthquakeActivity extends AppCompatActivity {
             }
         });
 
-        new EarthquakeAsyncTask().execute(USGS_URL);
+        getSupportLoaderManager().initLoader(0, null, this);
+        //new EarthquakeAsyncTask().execute(USGS_URL);
     }
 
+    @Override
+    public Loader<List<Earthquake>> onCreateLoader(int id, Bundle args) {
+        return new EarthquakeLoader(this, USGS_URL);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> data) {
+        // Clear the adapter of previous earthquake data
+        mAdapter.clear();
+
+        // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
+        // data set. This will trigger the ListView to update.
+        if (data != null && !data.isEmpty()) {
+            mAdapter.addAll(data);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Earthquake>> loader) {
+        mAdapter.clear();
+    }
+
+    /*
     private class EarthquakeAsyncTask extends AsyncTask<String, Void, List<Earthquake>> {
         @Override
         protected List<Earthquake> doInBackground(String... urls) {
@@ -86,7 +111,8 @@ public class EarthquakeActivity extends AppCompatActivity {
 
             return earthquakes;
         }
-
+        */
+/*
         @Override
         protected void onPostExecute(List<Earthquake> earthquakes) {
             // Clear the adapter of previous earthquake data
@@ -98,5 +124,6 @@ public class EarthquakeActivity extends AppCompatActivity {
                 mAdapter.addAll(earthquakes);
             }
         }
-    }
+
+    }     */
 }
