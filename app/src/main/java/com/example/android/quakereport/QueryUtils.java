@@ -39,6 +39,19 @@ public final class QueryUtils {
     public static List<Earthquake> fetchEarthQuakeData(String requestUrl) {
         Log.v(LOG_TAG, "*************Called BEGIN fetchEarthQuakeData()");
         Log.v(LOG_TAG, "*************Called fetchEarthQuakeData() before createUrl");
+
+        /**
+         * We are forcing the background thread to pause execution and wait for 2 seconds (which is 2000 milliseconds),
+         * before proceeding to execute the rest of lines of code in this method. If you try to add the Thread.sleep(2000);
+         * method call by itself, Android Studio will complain that there is an uncaught exception, so we need to
+         * surround that statement with a try/catch block.
+         */
+//        try {
+//            Thread.sleep(2000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
         // Create URL object
         URL url = createUrl(requestUrl);
 

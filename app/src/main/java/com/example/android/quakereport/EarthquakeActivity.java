@@ -15,7 +15,10 @@
  */
 package com.example.android.quakereport;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -48,6 +51,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     private EarthquakeAdapter mAdapter;
 
     private TextView mEmptyStateTextView;;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +62,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
-        mEmptyStateTextView = (TextView) findViewById(R.id.emptyView);
+        mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
         earthquakeListView.setEmptyView(mEmptyStateTextView);
 
         // Create a new adapter that takes the list of earthquakes as input
@@ -87,15 +91,34 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
             }
         });
 
-        Log.v(LOG_TAG, "*******************onCreate() before getLoadManager()");
 
-        // First we need to specify an ID for our loader. This is only really relevant if
-        // we were using multiple loaders in the same activity. We can choose any integer
-        // number, so we choose the number 1.
-        getSupportLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null, this);
 
-        Log.v(LOG_TAG, "*******************onCreate() after getLoadManager()");
+        Log.v(LOG_TAG, "*******************Check internet connectivity");
+        // Determine if You Have an Internet Connection. You'll need android.permission.ACCESS_NETWORK_STATE permission
+        // Source: https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html?utm_source=udacity&utm_medium=course&utm_campaign=android_basics
+        ConnectivityManager cm =
+                (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        if (isConnected == true) {
+            Log.v(LOG_TAG, "*******************Internet Conneciton: Success");
+            Log.v(LOG_TAG, "*******************onCreate() before getLoadManager()");
+            // First we need to specify an ID for our loader. This is only really relevant if
+            // we were using multiple loaders in the same activity. We can choose any integer
+            // number, so we choose the number 1.
+            getSupportLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null, this);
+
+            Log.v(LOG_TAG, "*******************onCreate() after getLoadManager()");
+        } else {
+            Log.v(LOG_TAG, "*******************No Internet Conneciton");
+            // Hide loading indicator because the data has been loaded
+            View loadingIndicator = findViewById(R.id.loading_indicator);
+            loadingIndicator.setVisibility(View.GONE);
+            mEmptyStateTextView.setText(R.string.no_internet);
+        }
     }
 
     @Override
@@ -107,6 +130,10 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     @Override
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> data) {
         Log.v(LOG_TAG, "*******************Called onLoadFinished()");
+
+        // Hide loading indicator because the data has been loaded
+        View loadingIndicator = findViewById(R.id.loading_indicator);
+        loadingIndicator.setVisibility(View.GONE);
 
         // To avoid the “No earthquakes found.” message blinking on the screen when the app
         // first launches, we can leave the empty state TextView blank, until the first load completes.
